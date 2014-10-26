@@ -114,5 +114,30 @@ describe("Clase GameBoard", function(){
         expect (board_test.objects.length).toEqual(1);            
         
     });
+
+    it ("spect & draw", function () {
+        // Creo un objeto dummy
+        var dummy = { step: function (){}, draw: function (){} };
+
+        // comprobamos sus metodos
+        spyOn (dummy, "step");
+        spyOn (board_test, "resetRemoved");
+        spyOn (board_test, "finalizeRemoved");
+        spyOn (dummy, "draw");
+
+        // agregamos el dummy al board
+        board_test.add (dummy);
+
+        // Hacemos la llamada a step y miramos si se llama a sus campos
+        board_test.step (1.0);        
+        expect (board_test.resetRemoved).toHaveBeenCalled();
+        expect (dummy.step).toHaveBeenCalled ();      
+        expect (board_test.finalizeRemoved).toHaveBeenCalled();
+
+        // Hacemos la llamada a draw y miramos si se llama a sus campos
+        board_test.draw(ctx);            
+         expect (dummy.draw).toHaveBeenCalled ();
+    });                
+
 });
 
