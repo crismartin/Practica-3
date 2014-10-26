@@ -89,6 +89,7 @@ describe("Clase GameBoard", function(){
 
     });
     
+
     // comprobamos si se borran objetos del board
     it ("delete_objetos a board", function () {
         // Creamos un player
@@ -115,7 +116,8 @@ describe("Clase GameBoard", function(){
         
     });
 
-    it ("spect & draw", function () {
+
+    it ("spect() & draw()", function () {
         // Creo un objeto dummy
         var dummy = { step: function (){}, draw: function (){} };
 
@@ -129,7 +131,7 @@ describe("Clase GameBoard", function(){
         board_test.add (dummy);
 
         // Hacemos la llamada a step y miramos si se llama a sus campos
-        board_test.step (1.0);        
+        board_test.step (2.0);        
         expect (board_test.resetRemoved).toHaveBeenCalled();
         expect (dummy.step).toHaveBeenCalled ();      
         expect (board_test.finalizeRemoved).toHaveBeenCalled();
@@ -139,5 +141,33 @@ describe("Clase GameBoard", function(){
         expect (dummy.draw).toHaveBeenCalled ();
     });                
 
+
+    // Colisiones
+    it ("overlap() & collide()", function (){
+        // Creamos elementos para el board
+        var objeto1 = {x: 60, y: 200, h: 11 , w: 11 };
+        var objeto2 = {x: 70, y: 210, h: 1 , w: 1};
+        var objeto3 = {x:50 , y: 300 , h:1 , w: 12};
+
+        // Miramos si hay interseccion o no
+        // En este caso hay interseccion, por tanto debe ser true            
+        expect ( board_test.overlap (objeto1, objeto2)).toBe (true);        
+        // En este caso obj1 y obj3 no tienen interseccion, debe ser false
+        expect (board_test.overlap (objeto1, objeto3)).toBe (false);
+        
+        board_test.add (objeto1);
+        board_test.add (objeto2);
+        board_test.add (objeto3);
+
+        // probamos si colisiona el objeto 4 con algun objeto de tipo1 
+        var objeto4 = {type: "1", x:50 , y: 300 , h:1 , w: 12};
+        expect (board_test.collide(objeto4, "1")).toBe (false);
+        
+        board_test.add (objeto4);
+
+        var objeto5 = {x:50 , y: 300 , h:1 , w: 12};
+        expect (board_test.collide(objeto5, "1")).toBe (objeto4);
+           
+    });
 });
 
