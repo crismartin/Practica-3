@@ -77,13 +77,42 @@ describe("Clase GameBoard", function(){
 
     // comprobamos si se agregan elementos al board
     it ("add_objetos a board", function (){
+
         // Creamos un player
         var jugador = new PlayerShip ();
-        // Compruebo si lo añade
+
+        // Compruebo si lo añade, comparando lo agregado..
         expect (board_test.add (jugador)).toEqual (jugador);
+
+        //.. y mirando cuantos objetos tiene ahora el board
+        expect (board_test.objects.length).toEqual(1);
 
     });
     
+    // comprobamos si se borran objetos del board
+    it ("delete_objetos a board", function () {
+        // Creamos un player
+        var jugador2 = new PlayerShip ();
+
+        // Añado el jugador al board
+        board_test.add (jugador2);
+
+        // Comprobamos si se ha añadido el objeto al board
+        // como habíamos añadido uno, ahora habrán 2
+        expect (board_test.objects.length).toEqual(2);            
+
+        // Inicializamos la lista de elementos a borrar
+        board_test.resetRemoved ();            
     
+        // Marcamos el elemento para borrar
+        board_test.remove (jugador2);    
+
+        // Realizamos el borrado
+        board_test.finalizeRemoved();        
+
+        // Comprobamos si se ha borrado
+        expect (board_test.objects.length).toEqual(1);            
+        
+    });
 });
 
