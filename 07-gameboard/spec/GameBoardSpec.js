@@ -136,7 +136,7 @@ describe("Clase GameBoard", function(){
 
         // Hacemos la llamada a draw y miramos si se llama a sus campos
         board_test.draw(ctx);            
-         expect (dummy.draw).toHaveBeenCalled ();
+        expect (dummy.draw).toHaveBeenCalled ();
     });                
 
 });
