@@ -171,9 +171,9 @@ var GameBoard = function() {
 
     // Añade obj a objects
     this.add = function(obj) { 
-	obj.board=this;  // Para que obj pueda referenciar el tablero
-	this.objects.push(obj); 
-	return obj; 
+        	obj.board=this;  // Para que obj pueda referenciar el tablero
+        	this.objects.push(obj); 
+        	return obj; 
     };
 
     // Los siguientes 3 métodos gestionan el borrado.  Cuando un board
@@ -184,7 +184,7 @@ var GameBoard = function() {
 
     // Marcar un objeto para borrar
     this.remove = function(obj) { 
-	this.removed.push(obj); 
+        	this.removed.push(obj); 
     };
 
     // Inicializar la lista de objetos pendientes de ser borrados
@@ -192,36 +192,56 @@ var GameBoard = function() {
 
     // Elimina de objects los objetos pendientes de ser borrados
     this.finalizeRemoved = function() {
-	for(var i=0, len=this.removed.length; i<len;i++) {
-	    // Buscamos qué índice tiene en objects[] el objeto i de
-	    // removed[]
-	    var idx = this.objects.indexOf(this.removed[i]);
+	    for(var i=0, len=this.removed.length; i<len;i++) {
+	        // Buscamos qué índice tiene en objects[] el objeto i de
+        	    // removed[]
+	        var idx = this.objects.indexOf(this.removed[i]);
 
-	    // splice elimina de objects el objeto en la posición idx
-	    if(idx != -1) this.objects.splice(idx,1); 
-	}
+	        // splice elimina de objects el objeto en la posición idx
+        	    if(idx != -1) this.objects.splice(idx,1); 
+        	}
     }
 
 
     // Iterador que aplica el método funcName a todos los
     // objetos de objects
     this.iterate = function(funcName) {
-	// Convertimos en un array args (1..)
-	var args = Array.prototype.slice.call(arguments,1);
-
-	for(var i=0, len=this.objects.length; i<len;i++) {
-	    var obj = this.objects[i];
-	    obj[funcName].apply(obj,args)
-	}
+        	// Convertimos en un array args (1..)
+        	var args = Array.prototype.slice.call(arguments,1);    
+        // aplicando la funcion _.map de underscore.js, nos queda:
+        _.map (this.objects, 
+                    function (element){ 
+                        return (element[funcName].apply(element,args))
+                    });
+/*
+        	for(var i=0, len=this.objects.length; i<len;i++) {
+        	    var obj = this.objects[i];
+        	    obj[funcName].apply(obj,args)
+        	}
+*/
     };
 
     // Devuelve el primer objeto de objects para el que func es true
-    this.detect = function(func) {
-	for(var i = 0,val=null, len=this.objects.length; i < len; i++) {
-	    if(func.call(this.objects[i])) return this.objects[i];
-	}
-	return false;
+    this.detect = function(func){
+        var object =_.find (this.objects, function (elemento){return func.call(elemento)});
+        if (object !== undefined) {
+            return object;
+        }else{
+            return false;
+        }
     };
+/*
+    this.detect = function(func) {
+        	for(var i = 0,val=null, len=this.objects.length; i < len; i++) {
+	        if(func.call(this.objects[i])) return this.objects[i];
+        	}
+        	return false;
+    };
+*/
+
+
+
+
 
     // Cuando Game.loop() llame a step(), hay que llamar al método
     // step() de todos los objetos contenidos en el tablero.  Antes se
@@ -249,7 +269,7 @@ var GameBoard = function() {
     };
 
     // Encontrar el primer objeto de tipo type que colisiona con obj
-    // Si se llama sin type, en contrar el primer objeto de cualquier
+    // Si se llama sin type, encontrar el primer objeto de cualquier
     // tipo que colisiona con obj
     this.collide = function(obj,type) {
 	return this.detect(function() {
@@ -259,8 +279,4 @@ var GameBoard = function() {
 	    }
 	});
     };
-
-
 };
-
-
