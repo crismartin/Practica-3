@@ -57,12 +57,30 @@ describe ("Clase PlayerMissile", function (){
         expect (proyectil.x).toBe (9);
         expect (proyectil.y).toBe (0);
         expect (proyectil.vy).toBe (-700);
-                              
     });
 
+
+    it ("step missile", function (){
+        
+        // objeto singleton y mi mapa
+        SpriteSheet = {
+            map: {missile: { sx: 0, sy: 30, w: 2, h: 10, frames: 1 }}
+        };
+       //  creo mis misiles
+        var proyectil = new PlayerMissile (10, 10);
+
+        // creo el objeto dummy 'proyectil.board' con la funcion remove
+        var proyectil.board = {
+            remove: function (misil) {};
+        };
+        // creo el espia para la funcion remove
+        spyOn (proyectil.board, "remove");
+
+        // dt = 1 en la llamada a step
+        proyectil.step(1.0);
+
+        // compruebo si ha sido llamada la funcion 'remove'
+        expect (proyectil.board.remove)).toHaveBeenCalled();
+    });
 });
-
-
-
-
 
