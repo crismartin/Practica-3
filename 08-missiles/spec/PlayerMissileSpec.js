@@ -10,7 +10,6 @@
   los anteriores
 
 
-
   Especificación:
 
   - Hay que añadir a la variable sprites la especificación del sprite
@@ -27,3 +26,43 @@
     la clase en el prototipo
 
 */
+
+describe ("Clase PlayerMissile", function (){
+    	//comprobamos si existe canvas
+    var canvas, ctx;
+
+    beforeEach(function(){
+		loadFixtures('index.html');
+
+		canvas = $('#game')[0];
+		expect(canvas).toExist();
+
+		ctx = canvas.getContext('2d');
+		expect(ctx).toBeDefined();
+
+    });
+
+
+    it ("constructor missile", function (){
+        // objeto singleton y mi mapa
+        SpriteSheet = {
+            map: {missile: { sx: 0, sy: 30, w: 2, h: 10, frames: 1 }}
+        };
+       //  creo mis misiles
+        var proyectil = new PlayerMissile (10, 10);
+        
+        // compruebo si se crea bien el missil
+        expect (proyectil.w).toBe (2);
+        expect (proyectil.h).toBe (10);
+        expect (proyectil.x).toBe (9);
+        expect (proyectil.y).toBe (0);
+        expect (proyectil.vy).toBe (-700);
+                              
+    });
+
+});
+
+
+
+
+
