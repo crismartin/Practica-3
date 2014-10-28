@@ -70,17 +70,40 @@ describe ("Clase PlayerMissile", function (){
         var proyectil = new PlayerMissile (10, 10);
 
         // creo el objeto dummy 'proyectil.board' con la funcion remove
-        var proyectil.board = {
-            remove: function (misil) {};
+        var dummy = {
+            remove: function (misil) {}
         };
+
+        proyectil.board = dummy;
         // creo el espia para la funcion remove
-        spyOn (proyectil.board, "remove");
+        spyOn (dummy, "remove");
 
         // dt = 1 en la llamada a step
         proyectil.step(1.0);
 
         // compruebo si ha sido llamada la funcion 'remove'
-        expect (proyectil.board.remove)).toHaveBeenCalled();
+        expect (dummy.remove).toHaveBeenCalled();
+    });
+
+    it ("draw missile", function (){
+        // objeto singleton y mi mapa con funcion draw
+        SpriteSheet = {
+            map: {missile: { sx: 0, sy: 30, w: 2, h: 10, frames: 1 }},
+            draw: function (){}
+        };
+
+        // creo mi missil
+        var proyectil = new PlayerMissile (10, 10);
+
+        // espia a la funcion draw
+        spyOn (SpriteSheet, "draw");
+
+        // ejecutamos la funcion draw del missil
+        proyectil.draw (ctx);
+    
+        // miramos si se ha realizado la llamada la funcion draw
+        expect (SpriteSheet.draw).toHaveBeenCalled ();
+
     });
 });
 
