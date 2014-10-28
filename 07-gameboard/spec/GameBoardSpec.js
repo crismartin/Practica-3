@@ -169,5 +169,39 @@ describe("Clase GameBoard", function(){
         expect (board_test.collide(objeto5, "1")).toBe (objeto4);
            
     });
+    
+    it ("iterate & detect", function () {        
+        //
+        // iterate
+        //
+        var dummy = {step: function (){}};
+        
+        // para mirar si se llama a iterate
+        spyOn(dummy, "step");
+        spyOn(board_test, "iterate");
+
+        // agrego el objeto dummy al board
+        board_test.add (dummy);
+        
+        board_test.step(2.0);
+                      
+        // miramos si se llama a 'iterate'
+        expect (board_test.iterate).toHaveBeenCalled();
+        
+        //
+        // detect
+        //
+        var objeto6 = {x:50 , y: 300 , h:1 , w: 12};
+
+        // para mirar si se llama a detect
+        spyOn(board_test, "detect");
+        
+        // ejecutamos collide que es la funcion que llama a detect
+        board_test.collide(objeto6,"1");
+        
+        // miramos si ha sido llamado detect
+        expect(board_test.detect).toHaveBeenCalled();
+
+    });    
 });
 
